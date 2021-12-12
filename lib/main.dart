@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'notifiers_and_states/mqa_notifier.dart';
+import 'notifiers_and_states/mqa_state.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
+
+final mqaNotifier = StateNotifierProvider<MQANotifier, MQAState>((ref) {
+  return MQANotifier();
+  //TimerXState(duration: Duration(milliseconds: 0), isRunning: false);
+});
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -24,7 +33,101 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MQAPage(),
+    );
+  }
+}
+
+class MQAPage extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MQAPageState();
+}
+
+class _MQAPageState extends ConsumerState<MQAPage> {
+  @override
+  Widget build(BuildContext context) {
+    final x = ref.watch(mqaNotifier);
+    //var td = x.fullDuration; //.duration;
+    //var isEven = td.inSeconds % 2 == 0 ? true : false;
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(child: Text("Multiplication")),
+      ),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 30,
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${x.question}",
+                    style: TextStyle(fontSize: 50),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.grey, width: 5),
+                      borderRadius: BorderRadius.circular(15)),
+                ),
+              ),
+            ),
+            Expanded(
+                flex: 5,
+                child: GridView.count(
+                  padding: EdgeInsets.all(5),
+                  crossAxisCount: 3,
+                  children: x.possibleAnswers.asMap().entries.map((e) {
+                    return SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: SizedBox.expand(
+                              child: Center(
+                                child: Text(x.possibleAnswers[e.key].toString(),
+                                    style: TextStyle(fontSize: 50)),
+                              ),
+                            ),
+                            style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.yellow.shade800),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: BorderSide(
+                                            color: Colors.yellow.shade900,
+                                            width: 5)))),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                )),
+            // MaterialButton(
+            //     child: Text(x.isRunning ? "Stop" : "Start"),
+            //     onPressed: () {
+            //       var n = ref.read(mqaNotifier.notifier);
+            //       x.isRunning ? n.stopTimer() : n.startTimer();
+            //     }),
+          ],
+        ),
+      ),
     );
   }
 }
