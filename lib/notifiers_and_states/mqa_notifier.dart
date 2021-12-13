@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'mqa_state.dart';
@@ -20,8 +21,35 @@ class MQANotifier extends StateNotifier<MQAState> {
 
   newQuestionAfterDelay(Duration duration) {
     Future.delayed(duration, () {
-      state = MQAState();
+      state = newQuestionState();
     });
+  }
+
+  newQuestionState() {
+    var minimumNum = 2;
+    var rng = new Random();
+    var a = minimumNum + rng.nextInt(9 - minimumNum);
+    var b = minimumNum + rng.nextInt(9 - minimumNum);
+    var answer = a * b;
+    var correctAnswerIndex = -1;
+    // TODO: The below definitley needs correcting for boudaries
+    do {
+      correctAnswerIndex = rng.nextInt(9);
+    } while (answer <= correctAnswerIndex);
+    var before = List<int>.generate(answer - 1, (i) => i + 1)..shuffle();
+    before = before.sublist(0, correctAnswerIndex);
+    var after = List<int>.generate(144 - (answer + 1), (i) => answer + i + 1)
+      ..shuffle();
+    after = after.sublist(0, 9 - (correctAnswerIndex + 1));
+    before.sort();
+    after.sort();
+    var possibleAnswers = [...before, answer, ...after];
+    state = MQAState(
+      question: "$a x $b",
+      progress: MQAStateProgress.asking,
+      possibleAnswers: possibleAnswers,
+      correctAnswerIndex: correctAnswerIndex,
+    );
   }
 
   startTimer() {
