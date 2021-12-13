@@ -9,6 +9,21 @@ class MQANotifier extends StateNotifier<MQAState> {
 
   // 1. initialize with current time
   MQANotifier() : super(MQAState()) {}
+
+  setSelectedIndex(int index) {
+    newQuestionAfterDelay(index == state.correctAnswerIndex
+        ? Duration(milliseconds: 1500)
+        : Duration(milliseconds: 3000));
+    state = state.copyWith(
+        selectedIndex: index, progress: MQAStateProgress.showingAnswer);
+  }
+
+  newQuestionAfterDelay(Duration duration) {
+    Future.delayed(duration, () {
+      state = MQAState();
+    });
+  }
+
   startTimer() {
     // timerStartedAt = DateTime.now();
     // state = state.copyWith(isRunning: true);

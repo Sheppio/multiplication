@@ -11,7 +11,8 @@ class MQAState with _$MQAState {
       {@Default('2 x 3') String question,
       @Default(MQAStateProgress.asking) MQAStateProgress progress,
       @Default(<int>[1, 2, 3, 4, 5, 6, 7, 8, 9]) List<int> possibleAnswers,
-      @Default(5) int correctAnswerIndex}) = _MQAState;
+      @Default(5) int correctAnswerIndex,
+      @Default(-1) int selectedIndex}) = _MQAState;
 
   // Duration get fullDuration {
   //   if (pastSplits.length == 0)

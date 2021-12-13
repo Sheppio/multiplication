@@ -47,8 +47,31 @@ class _MQAPageState extends ConsumerState<MQAPage> {
   @override
   Widget build(BuildContext context) {
     final x = ref.watch(mqaNotifier);
-    //var td = x.fullDuration; //.duration;
-    //var isEven = td.inSeconds % 2 == 0 ? true : false;
+
+    var buttonStyleStandard = ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor:
+            MaterialStateProperty.all<Color>(Colors.yellow.shade800),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.yellow.shade900, width: 5))));
+    var buttonStyleCorrect = ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor:
+            MaterialStateProperty.all<Color>(Colors.green.shade500),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.green.shade900, width: 5))));
+    var buttonStyleIncorrect = ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade500),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.red.shade900, width: 5))));
+
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Multiplication")),
@@ -91,29 +114,31 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: ElevatedButton(
-                            onPressed: () {},
-                            child: SizedBox.expand(
-                              child: Center(
-                                child: Text(x.possibleAnswers[e.key].toString(),
-                                    style: TextStyle(fontSize: 50)),
+                              onPressed: () {
+                                x.progress == MQAStateProgress.asking
+                                    ? ref
+                                        .read(mqaNotifier.notifier)
+                                        .setSelectedIndex(e.key)
+                                    : null;
+                              },
+                              child: SizedBox.expand(
+                                child: Center(
+                                  child: Text(
+                                      x.possibleAnswers[e.key].toString(),
+                                      style: TextStyle(fontSize: 50)),
+                                ),
                               ),
-                            ),
-                            style: ButtonStyle(
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.yellow.shade800),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        side: BorderSide(
-                                            color: Colors.yellow.shade900,
-                                            width: 5)))),
-                          ),
+                              style: (() {
+                                if (x.progress == MQAStateProgress.asking) {
+                                  return buttonStyleStandard;
+                                } else if (e.key == x.correctAnswerIndex) {
+                                  return buttonStyleCorrect;
+                                } else if (e.key == x.selectedIndex) {
+                                  return buttonStyleIncorrect;
+                                } else {
+                                  return buttonStyleStandard;
+                                }
+                              }())),
                         ),
                       ),
                     );
