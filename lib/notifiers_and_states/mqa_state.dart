@@ -14,6 +14,10 @@ class MQAState with _$MQAState {
       @Default(5) int correctAnswerIndex,
       @Default(-1) int selectedIndex}) = _MQAState;
 
+  int get correctAnswer {
+    return possibleAnswers[correctAnswerIndex];
+  }
+
   // Duration get fullDuration {
   //   if (pastSplits.length == 0)
   //     return duration;

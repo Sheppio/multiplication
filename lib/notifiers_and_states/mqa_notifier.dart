@@ -9,7 +9,25 @@ class MQANotifier extends StateNotifier<MQAState> {
   DateTime timerStartedAt = DateTime.now();
 
   // 1. initialize with current time
-  MQANotifier() : super(MQAState()) {}
+  MQANotifier() : super(MQAState()) {
+    // for (int x = 0; x < 100; x++) {
+    //   newQuestionState();
+    // }
+  }
+
+  var multiplierSettings = <MultiplierSetting>[
+    MultiplierSetting(2, true),
+    MultiplierSetting(3, true),
+    MultiplierSetting(4, false),
+    MultiplierSetting(5, true),
+    MultiplierSetting(6, false),
+    MultiplierSetting(7, false),
+    MultiplierSetting(8, false),
+    MultiplierSetting(9, false),
+    MultiplierSetting(10, true),
+    MultiplierSetting(11, false),
+    MultiplierSetting(12, false),
+  ];
 
   setSelectedIndex(int index) {
     newQuestionAfterDelay(index == state.correctAnswerIndex
@@ -25,12 +43,17 @@ class MQANotifier extends StateNotifier<MQAState> {
     });
   }
 
-  newQuestionState() {
+  MQAState newQuestionState() {
     var minimumNum = 2;
-    var rng = new Random();
-    var a = minimumNum + rng.nextInt(9 - minimumNum);
-    var b = minimumNum + rng.nextInt(9 - minimumNum);
-    var answer = a * b;
+    var rng = Random();
+    var multipliers = multiplierSettings
+        .where((e) => e.selectable == true)
+        .map((e) => e.multiplier)
+        .toList();
+    print('Multipliers: $multipliers');
+    var multiplicand = minimumNum + rng.nextInt(12 + 1 - minimumNum);
+    var multiplier = multipliers[rng.nextInt(multipliers.length)];
+    var answer = multiplicand * multiplier;
     var correctAnswerIndex = -1;
     // TODO: The below definitley needs correcting for boudaries
     do {
@@ -44,12 +67,14 @@ class MQANotifier extends StateNotifier<MQAState> {
     before.sort();
     after.sort();
     var possibleAnswers = [...before, answer, ...after];
-    state = MQAState(
-      question: "$a x $b",
+    var tempState = MQAState(
+      question: "$multiplicand x $multiplier",
       progress: MQAStateProgress.asking,
       possibleAnswers: possibleAnswers,
       correctAnswerIndex: correctAnswerIndex,
     );
+    print(tempState.toString() + ' ${tempState.correctAnswer}');
+    return tempState;
   }
 
   startTimer() {
@@ -76,6 +101,15 @@ class MQANotifier extends StateNotifier<MQAState> {
     // state = MQAState();
   }
 }
+
+class MultiplierSetting {
+  int multiplier;
+  bool selectable;
+  MultiplierSetting(this.multiplier, this.selectable);
+}
+
+
+
 
 
 // class TimerXState {
