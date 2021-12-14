@@ -2,27 +2,16 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../main.dart';
 import 'mqa_state.dart';
 
 class MQANotifier extends StateNotifier<MQAState> {
+  final Ref ref;
   late Timer _timer;
   DateTime timerStartedAt = DateTime.now();
 
   // 1. initialize with current time
-  MQANotifier()
-      : super(MQAState(multiplierSettings: <MultiplierSetting>[
-          MultiplierSetting(2, true),
-          MultiplierSetting(3, true),
-          MultiplierSetting(4, false),
-          MultiplierSetting(5, true),
-          MultiplierSetting(6, false),
-          MultiplierSetting(7, false),
-          MultiplierSetting(8, false),
-          MultiplierSetting(9, false),
-          MultiplierSetting(10, true),
-          MultiplierSetting(11, false),
-          MultiplierSetting(12, false),
-        ])) {
+  MQANotifier(this.ref) : super(MQAState()) {
     // for (int x = 0; x < 100; x++) {
     //   newQuestionState();
     // }
@@ -44,18 +33,10 @@ class MQANotifier extends StateNotifier<MQAState> {
 
   setSelectedIndex(int index) {
     newQuestionAfterDelay(index == state.correctAnswerIndex
-        ? Duration(milliseconds: 1500)
+        ? Duration(milliseconds: 1000)
         : Duration(milliseconds: 3000));
     state = state.copyWith(
         selectedIndex: index, progress: MQAStateProgress.showingAnswer);
-  }
-
-  toggleMultiplierSetting(int multiplier) {
-    var t = state.multiplierSettings;
-    var index = t.indexWhere((e) => e.multiplier == multiplier);
-    t[index].selectable = !t[index].selectable;
-    state = state.copyWith(multiplierSettings: [...t]);
-    print('toggleMultiplierSettings state: $state');
   }
 
   newQuestionAfterDelay(Duration duration) {
@@ -65,11 +46,12 @@ class MQANotifier extends StateNotifier<MQAState> {
   }
 
   MQAState newQuestionState() {
+    var multiplierSettings = ref.read(mSettingsNotifier);
     var minimumNum = 2;
     var rng = Random();
-    var multipliers = state.multiplierSettings
-        .where((e) => e.selectable == true)
-        .map((e) => e.multiplier)
+    var multipliers = multiplierSettings.multiplierSettings.entries
+        .where((e) => e.value == true)
+        .map((e) => e.key)
         .toList();
     print('Multipliers: $multipliers');
     var multiplicand = minimumNum + rng.nextInt(12 + 1 - minimumNum);
@@ -89,50 +71,21 @@ class MQANotifier extends StateNotifier<MQAState> {
     after.sort();
     var possibleAnswers = [...before, answer, ...after];
     var tempState = MQAState(
-        question: "$multiplicand x $multiplier",
-        progress: MQAStateProgress.asking,
-        possibleAnswers: possibleAnswers,
-        correctAnswerIndex: correctAnswerIndex,
-        multiplierSettings: state.multiplierSettings);
+      question: "$multiplicand x $multiplier",
+      progress: MQAStateProgress.asking,
+      possibleAnswers: possibleAnswers,
+      correctAnswerIndex: correctAnswerIndex,
+    );
     print(tempState.toString() + ' ${tempState.correctAnswer}');
     return tempState;
   }
 
-  startTimer() {
-    // timerStartedAt = DateTime.now();
-    // state = state.copyWith(isRunning: true);
-    // _timer = Timer.periodic(Duration(milliseconds: 10), (_) {
-    //   // 3. update the state with the current time
-    //   state = state.copyWith(
-    //       duration: Duration(
-    //           milliseconds: DateTime.now().millisecondsSinceEpoch -
-    //               timerStartedAt.millisecondsSinceEpoch));
-    // });
-  }
-
-  stopTimer() {
-    // _timer.cancel();
-    // state = state.copyWith(
-    //     duration: const Duration(milliseconds: 0),
-    //     isRunning: false,
-    //     pastSplits: [...state.pastSplits, state.duration]);
-  }
-
-  resetTimer() {
-    // state = MQAState();
+  int get correctAnswer {
+    return state.possibleAnswers[state.correctAnswerIndex];
   }
 }
 
-class MultiplierSetting {
-  int multiplier;
-  bool selectable;
-  MultiplierSetting(this.multiplier, this.selectable);
 
-  @override
-  String toString() {
-    return '${multiplier.toString()}:$selectable';
-  }
-}
 
 
 
