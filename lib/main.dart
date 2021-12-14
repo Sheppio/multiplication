@@ -5,13 +5,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'notifiers_and_states/mqa_notifier.dart';
 import 'notifiers_and_states/mqa_state.dart';
+import 'notifiers_and_states/msettings_notifier.dart';
+import 'notifiers_and_states/msettings_state.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
 }
 
+final mSettingsNotifier =
+    StateNotifierProvider<MSettingsNotifier, MSettingsState>((ref) {
+  return MSettingsNotifier(ref);
+  //TimerXState(duration: Duration(milliseconds: 0), isRunning: false);
+});
+
 final mqaNotifier = StateNotifierProvider<MQANotifier, MQAState>((ref) {
-  return MQANotifier();
+  return MQANotifier(ref);
   //TimerXState(duration: Duration(milliseconds: 0), isRunning: false);
 });
 
@@ -132,12 +140,12 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                   alignment: Alignment.center,
                   child: Text(
                     "${x.question}",
-                    style: TextStyle(fontSize: 50),
+                    style: TextStyle(fontSize: 75),
                   ),
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       border: Border.all(color: Colors.grey, width: 5),
-                      borderRadius: BorderRadius.circular(15)),
+                      borderRadius: BorderRadius.circular(18)),
                 ),
               ),
             ),
@@ -164,9 +172,12 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                               },
                               child: SizedBox.expand(
                                 child: Center(
-                                  child: Text(
-                                      x.possibleAnswers[e.key].toString(),
-                                      style: TextStyle(fontSize: 50)),
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: Text(
+                                        x.possibleAnswers[e.key].toString(),
+                                        style: TextStyle(fontSize: 50)),
+                                  ),
                                 ),
                               ),
                               style: (() {
@@ -210,8 +221,8 @@ class SettingsToggleGroup extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var multiplierSettings =
-        ref.watch(mqaNotifier.select((state) => state.multiplierSettings));
+    var multiplierSettings = ref
+        .watch(mSettingsNotifier.select((state) => state.multiplierSettings));
 
     return Column(
       children: [
@@ -221,7 +232,7 @@ class SettingsToggleGroup extends ConsumerWidget {
             child: GridView.count(
               padding: EdgeInsets.all(5),
               crossAxisCount: 3,
-              children: multiplierSettings.map((e) {
+              children: multiplierSettings.entries.map((e) {
                 print(e);
                 return SizedBox(
                   width: 80,
@@ -233,17 +244,17 @@ class SettingsToggleGroup extends ConsumerWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             ref
-                                .read(mqaNotifier.notifier)
-                                .toggleMultiplierSetting(e.multiplier);
+                                .read(mSettingsNotifier.notifier)
+                                .toggleMultiplierSetting(e.key);
                           },
                           child: SizedBox.expand(
                             child: Center(
-                              child: Text(e.multiplier.toString(),
+                              child: Text(e.key.toString(),
                                   style: TextStyle(fontSize: 25)),
                             ),
                           ),
                           style: (() {
-                            if (e.selectable) {
+                            if (e.value) {
                               return buttonStyleCorrect;
                             } else {
                               return buttonStyleStandard;
