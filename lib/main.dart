@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,6 +50,10 @@ class _MQAPageState extends ConsumerState<MQAPage> {
   Widget build(BuildContext context) {
     final x = ref.watch(mqaNotifier);
 
+    ref.listen(mqaNotifier, (previous, next) {
+      print('STATE UPDATE: $next');
+    });
+
     var buttonStyleStandard = ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor:
@@ -74,8 +80,43 @@ class _MQAPageState extends ConsumerState<MQAPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Multiplication")),
-      ),
+          title: Center(child: Text("Multiplication")),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.format_list_numbered),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: AlertDialog(
+                          title: Center(child: Text('Pick your times tables')),
+                          content: SettingsToggleGroup(
+                              buttonStyleCorrect: buttonStyleCorrect,
+                              buttonStyleStandard: buttonStyleStandard),
+                          actions: <Widget>[
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Done')),
+                          ],
+                        ),
+                      );
+                    });
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+          ]),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,6 +194,69 @@ class _MQAPageState extends ConsumerState<MQAPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class SettingsToggleGroup extends ConsumerWidget {
+  const SettingsToggleGroup({
+    Key? key,
+    required this.buttonStyleCorrect,
+    required this.buttonStyleStandard,
+  }) : super(key: key);
+
+  final ButtonStyle buttonStyleCorrect;
+  final ButtonStyle buttonStyleStandard;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var multiplierSettings =
+        ref.watch(mqaNotifier.select((state) => state.multiplierSettings));
+
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            width: 280,
+            child: GridView.count(
+              padding: EdgeInsets.all(5),
+              crossAxisCount: 3,
+              children: multiplierSettings.map((e) {
+                print(e);
+                return SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            ref
+                                .read(mqaNotifier.notifier)
+                                .toggleMultiplierSetting(e.multiplier);
+                          },
+                          child: SizedBox.expand(
+                            child: Center(
+                              child: Text(e.multiplier.toString(),
+                                  style: TextStyle(fontSize: 25)),
+                            ),
+                          ),
+                          style: (() {
+                            if (e.selectable) {
+                              return buttonStyleCorrect;
+                            } else {
+                              return buttonStyleStandard;
+                            }
+                          }())),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

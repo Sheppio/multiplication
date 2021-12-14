@@ -22,13 +22,15 @@ class _$MQAStateTearOff {
       MQAStateProgress progress = MQAStateProgress.asking,
       List<int> possibleAnswers = const <int>[1, 2, 3, 4, 5, 6, 7, 8, 9],
       int correctAnswerIndex = 5,
-      int selectedIndex = -1}) {
+      int selectedIndex = -1,
+      required List<MultiplierSetting> multiplierSettings}) {
     return _MQAState(
       question: question,
       progress: progress,
       possibleAnswers: possibleAnswers,
       correctAnswerIndex: correctAnswerIndex,
       selectedIndex: selectedIndex,
+      multiplierSettings: multiplierSettings,
     );
   }
 }
@@ -43,6 +45,8 @@ mixin _$MQAState {
   List<int> get possibleAnswers => throw _privateConstructorUsedError;
   int get correctAnswerIndex => throw _privateConstructorUsedError;
   int get selectedIndex => throw _privateConstructorUsedError;
+  List<MultiplierSetting> get multiplierSettings =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MQAStateCopyWith<MQAState> get copyWith =>
@@ -58,7 +62,8 @@ abstract class $MQAStateCopyWith<$Res> {
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
-      int selectedIndex});
+      int selectedIndex,
+      List<MultiplierSetting> multiplierSettings});
 }
 
 /// @nodoc
@@ -76,6 +81,7 @@ class _$MQAStateCopyWithImpl<$Res> implements $MQAStateCopyWith<$Res> {
     Object? possibleAnswers = freezed,
     Object? correctAnswerIndex = freezed,
     Object? selectedIndex = freezed,
+    Object? multiplierSettings = freezed,
   }) {
     return _then(_value.copyWith(
       question: question == freezed
@@ -98,6 +104,10 @@ class _$MQAStateCopyWithImpl<$Res> implements $MQAStateCopyWith<$Res> {
           ? _value.selectedIndex
           : selectedIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      multiplierSettings: multiplierSettings == freezed
+          ? _value.multiplierSettings
+          : multiplierSettings // ignore: cast_nullable_to_non_nullable
+              as List<MultiplierSetting>,
     ));
   }
 }
@@ -112,7 +122,8 @@ abstract class _$MQAStateCopyWith<$Res> implements $MQAStateCopyWith<$Res> {
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
-      int selectedIndex});
+      int selectedIndex,
+      List<MultiplierSetting> multiplierSettings});
 }
 
 /// @nodoc
@@ -131,6 +142,7 @@ class __$MQAStateCopyWithImpl<$Res> extends _$MQAStateCopyWithImpl<$Res>
     Object? possibleAnswers = freezed,
     Object? correctAnswerIndex = freezed,
     Object? selectedIndex = freezed,
+    Object? multiplierSettings = freezed,
   }) {
     return _then(_MQAState(
       question: question == freezed
@@ -153,6 +165,10 @@ class __$MQAStateCopyWithImpl<$Res> extends _$MQAStateCopyWithImpl<$Res>
           ? _value.selectedIndex
           : selectedIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      multiplierSettings: multiplierSettings == freezed
+          ? _value.multiplierSettings
+          : multiplierSettings // ignore: cast_nullable_to_non_nullable
+              as List<MultiplierSetting>,
     ));
   }
 }
@@ -165,7 +181,8 @@ class _$_MQAState extends _MQAState {
       this.progress = MQAStateProgress.asking,
       this.possibleAnswers = const <int>[1, 2, 3, 4, 5, 6, 7, 8, 9],
       this.correctAnswerIndex = 5,
-      this.selectedIndex = -1})
+      this.selectedIndex = -1,
+      required this.multiplierSettings})
       : super._();
 
   @JsonKey()
@@ -183,10 +200,12 @@ class _$_MQAState extends _MQAState {
   @JsonKey()
   @override
   final int selectedIndex;
+  @override
+  final List<MultiplierSetting> multiplierSettings;
 
   @override
   String toString() {
-    return 'MQAState(question: $question, progress: $progress, possibleAnswers: $possibleAnswers, correctAnswerIndex: $correctAnswerIndex, selectedIndex: $selectedIndex)';
+    return 'MQAState(question: $question, progress: $progress, possibleAnswers: $possibleAnswers, correctAnswerIndex: $correctAnswerIndex, selectedIndex: $selectedIndex, multiplierSettings: $multiplierSettings)';
   }
 
   @override
@@ -201,7 +220,9 @@ class _$_MQAState extends _MQAState {
             const DeepCollectionEquality()
                 .equals(other.correctAnswerIndex, correctAnswerIndex) &&
             const DeepCollectionEquality()
-                .equals(other.selectedIndex, selectedIndex));
+                .equals(other.selectedIndex, selectedIndex) &&
+            const DeepCollectionEquality()
+                .equals(other.multiplierSettings, multiplierSettings));
   }
 
   @override
@@ -211,7 +232,8 @@ class _$_MQAState extends _MQAState {
       const DeepCollectionEquality().hash(progress),
       const DeepCollectionEquality().hash(possibleAnswers),
       const DeepCollectionEquality().hash(correctAnswerIndex),
-      const DeepCollectionEquality().hash(selectedIndex));
+      const DeepCollectionEquality().hash(selectedIndex),
+      const DeepCollectionEquality().hash(multiplierSettings));
 
   @JsonKey(ignore: true)
   @override
@@ -225,7 +247,8 @@ abstract class _MQAState extends MQAState {
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
-      int selectedIndex}) = _$_MQAState;
+      int selectedIndex,
+      required List<MultiplierSetting> multiplierSettings}) = _$_MQAState;
   _MQAState._() : super._();
 
   @override
@@ -238,6 +261,8 @@ abstract class _MQAState extends MQAState {
   int get correctAnswerIndex;
   @override
   int get selectedIndex;
+  @override
+  List<MultiplierSetting> get multiplierSettings;
   @override
   @JsonKey(ignore: true)
   _$MQAStateCopyWith<_MQAState> get copyWith =>

@@ -9,25 +9,38 @@ class MQANotifier extends StateNotifier<MQAState> {
   DateTime timerStartedAt = DateTime.now();
 
   // 1. initialize with current time
-  MQANotifier() : super(MQAState()) {
+  MQANotifier()
+      : super(MQAState(multiplierSettings: <MultiplierSetting>[
+          MultiplierSetting(2, true),
+          MultiplierSetting(3, true),
+          MultiplierSetting(4, false),
+          MultiplierSetting(5, true),
+          MultiplierSetting(6, false),
+          MultiplierSetting(7, false),
+          MultiplierSetting(8, false),
+          MultiplierSetting(9, false),
+          MultiplierSetting(10, true),
+          MultiplierSetting(11, false),
+          MultiplierSetting(12, false),
+        ])) {
     // for (int x = 0; x < 100; x++) {
     //   newQuestionState();
     // }
   }
 
-  var multiplierSettings = <MultiplierSetting>[
-    MultiplierSetting(2, true),
-    MultiplierSetting(3, true),
-    MultiplierSetting(4, false),
-    MultiplierSetting(5, true),
-    MultiplierSetting(6, false),
-    MultiplierSetting(7, false),
-    MultiplierSetting(8, false),
-    MultiplierSetting(9, false),
-    MultiplierSetting(10, true),
-    MultiplierSetting(11, false),
-    MultiplierSetting(12, false),
-  ];
+  // var multiplierSettings = <MultiplierSetting>[
+  //   MultiplierSetting(2, true),
+  //   MultiplierSetting(3, true),
+  //   MultiplierSetting(4, false),
+  //   MultiplierSetting(5, true),
+  //   MultiplierSetting(6, false),
+  //   MultiplierSetting(7, false),
+  //   MultiplierSetting(8, false),
+  //   MultiplierSetting(9, false),
+  //   MultiplierSetting(10, true),
+  //   MultiplierSetting(11, false),
+  //   MultiplierSetting(12, false),
+  // ];
 
   setSelectedIndex(int index) {
     newQuestionAfterDelay(index == state.correctAnswerIndex
@@ -35,6 +48,14 @@ class MQANotifier extends StateNotifier<MQAState> {
         : Duration(milliseconds: 3000));
     state = state.copyWith(
         selectedIndex: index, progress: MQAStateProgress.showingAnswer);
+  }
+
+  toggleMultiplierSetting(int multiplier) {
+    var t = state.multiplierSettings;
+    var index = t.indexWhere((e) => e.multiplier == multiplier);
+    t[index].selectable = !t[index].selectable;
+    state = state.copyWith(multiplierSettings: [...t]);
+    print('toggleMultiplierSettings state: $state');
   }
 
   newQuestionAfterDelay(Duration duration) {
@@ -46,7 +67,7 @@ class MQANotifier extends StateNotifier<MQAState> {
   MQAState newQuestionState() {
     var minimumNum = 2;
     var rng = Random();
-    var multipliers = multiplierSettings
+    var multipliers = state.multiplierSettings
         .where((e) => e.selectable == true)
         .map((e) => e.multiplier)
         .toList();
@@ -68,11 +89,11 @@ class MQANotifier extends StateNotifier<MQAState> {
     after.sort();
     var possibleAnswers = [...before, answer, ...after];
     var tempState = MQAState(
-      question: "$multiplicand x $multiplier",
-      progress: MQAStateProgress.asking,
-      possibleAnswers: possibleAnswers,
-      correctAnswerIndex: correctAnswerIndex,
-    );
+        question: "$multiplicand x $multiplier",
+        progress: MQAStateProgress.asking,
+        possibleAnswers: possibleAnswers,
+        correctAnswerIndex: correctAnswerIndex,
+        multiplierSettings: state.multiplierSettings);
     print(tempState.toString() + ' ${tempState.correctAnswer}');
     return tempState;
   }
@@ -106,6 +127,11 @@ class MultiplierSetting {
   int multiplier;
   bool selectable;
   MultiplierSetting(this.multiplier, this.selectable);
+
+  @override
+  String toString() {
+    return '${multiplier.toString()}:$selectable';
+  }
 }
 
 
