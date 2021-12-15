@@ -109,32 +109,50 @@ class _MQAPageState extends ConsumerState<MQAPage> {
               tooltip: 'Show Snackbar',
               onPressed: () {
                 showDialog(
+                    barrierDismissible: false,
                     context: context,
                     builder: (context) {
                       return BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                         child: AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(36.0)),
                           title: Center(child: Text('Pick your times tables')),
                           content: SettingsToggleGroup(
                               buttonStyleCorrect: buttonStyleSelected,
                               buttonStyleStandard: buttonStyleUnselected),
                           actions: <Widget>[
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Done')),
-                            OutlinedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  style: ButtonStyle(
+                                      padding:
+                                          MaterialStateProperty.all<EdgeInsets>(
+                                              EdgeInsets.symmetric(
+                                                  horizontal: 30, vertical: 5)),
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.red),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(30.0))),
+                                            BorderRadius.circular(36.0),
+                                        //side: BorderSide(color: Colors.red.shade900)
+                                      ))),
+                                  child: const Text(
+                                    "Done",
+                                    style: TextStyle(fontSize: 30),
+                                  ),
+                                ),
                               ),
-                              child: const Text("Done"),
                             )
                           ],
                         ),
@@ -251,46 +269,48 @@ class SettingsToggleGroup extends ConsumerWidget {
         .watch(mSettingsNotifier.select((state) => state.multiplierSettings));
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: Container(
-            width: 280,
-            child: GridView.count(
-              padding: EdgeInsets.all(5),
-              crossAxisCount: 3,
-              children: multiplierSettings.entries.map((e) {
-                print(e);
-                return SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(mSettingsNotifier.notifier)
-                                .toggleMultiplierSetting(e.key);
-                          },
-                          child: SizedBox.expand(
-                            child: Center(
-                              child: Text(e.key.toString(),
-                                  style: TextStyle(fontSize: 25)),
-                            ),
+        Container(
+          //color: Colors.deepPurple,
+          width: 280,
+          height: 360,
+          child: GridView.count(
+            padding: EdgeInsets.all(5),
+            crossAxisCount: 3,
+            children: multiplierSettings.entries.map((e) {
+              print(e);
+              return SizedBox(
+                width: 80,
+                height: 80,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          ref
+                              .read(mSettingsNotifier.notifier)
+                              .toggleMultiplierSetting(e.key);
+                        },
+                        child: SizedBox.expand(
+                          child: Center(
+                            child: Text(e.key.toString(),
+                                style: TextStyle(fontSize: 25)),
                           ),
-                          style: (() {
-                            if (e.value) {
-                              return buttonStyleCorrect;
-                            } else {
-                              return buttonStyleStandard;
-                            }
-                          }())),
-                    ),
+                        ),
+                        style: (() {
+                          if (e.value) {
+                            return buttonStyleCorrect;
+                          } else {
+                            return buttonStyleStandard;
+                          }
+                        }())),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           ),
         ),
       ],
