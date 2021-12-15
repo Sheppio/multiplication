@@ -13,6 +13,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+MSettingsState _$MSettingsStateFromJson(Map<String, dynamic> json) {
+  return _MSettingsState.fromJson(json);
+}
+
 /// @nodoc
 class _$MSettingsStateTearOff {
   const _$MSettingsStateTearOff();
@@ -35,6 +39,10 @@ class _$MSettingsStateTearOff {
       multiplierSettings: multiplierSettings,
     );
   }
+
+  MSettingsState fromJson(Map<String, Object?> json) {
+    return MSettingsState.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -44,6 +52,7 @@ const $MSettingsState = _$MSettingsStateTearOff();
 mixin _$MSettingsState {
   Map<int, bool> get multiplierSettings => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MSettingsStateCopyWith<MSettingsState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -114,7 +123,7 @@ class __$MSettingsStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_MSettingsState extends _MSettingsState {
   _$_MSettingsState(
       {this.multiplierSettings = const <int, bool>{
@@ -131,6 +140,9 @@ class _$_MSettingsState extends _MSettingsState {
         12: false
       }})
       : super._();
+
+  factory _$_MSettingsState.fromJson(Map<String, dynamic> json) =>
+      _$$_MSettingsStateFromJson(json);
 
   @JsonKey()
   @override
@@ -158,12 +170,20 @@ class _$_MSettingsState extends _MSettingsState {
   @override
   _$MSettingsStateCopyWith<_MSettingsState> get copyWith =>
       __$MSettingsStateCopyWithImpl<_MSettingsState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MSettingsStateToJson(this);
+  }
 }
 
 abstract class _MSettingsState extends MSettingsState {
   factory _MSettingsState({Map<int, bool> multiplierSettings}) =
       _$_MSettingsState;
   _MSettingsState._() : super._();
+
+  factory _MSettingsState.fromJson(Map<String, dynamic> json) =
+      _$_MSettingsState.fromJson;
 
   @override
   Map<int, bool> get multiplierSettings;

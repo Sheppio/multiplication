@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../data/multiplier_settings.dart';
 
 part 'msettings_state.freezed.dart';
+part 'msettings_state.g.dart';
 
 @freezed
 class MSettingsState with _$MSettingsState {
@@ -21,6 +22,9 @@ class MSettingsState with _$MSettingsState {
         12: false,
       })
           Map<int, bool> multiplierSettings}) = _MSettingsState;
+
+  factory MSettingsState.fromJson(Map<String, dynamic> json) =>
+      _$MSettingsStateFromJson(json);
 
   // Duration get fullDuration {
   //   if (pastSplits.length == 0)

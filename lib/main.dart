@@ -85,6 +85,20 @@ class _MQAPageState extends ConsumerState<MQAPage> {
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
                 side: BorderSide(color: Colors.red.shade900, width: 5))));
+    var buttonStyleSelected = ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade500),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.blue.shade900, width: 5))));
+    var buttonStyleUnselected = ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade500),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.grey.shade600, width: 5))));
 
     return Scaffold(
       appBar: AppBar(
@@ -102,14 +116,26 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                         child: AlertDialog(
                           title: Center(child: Text('Pick your times tables')),
                           content: SettingsToggleGroup(
-                              buttonStyleCorrect: buttonStyleCorrect,
-                              buttonStyleStandard: buttonStyleStandard),
+                              buttonStyleCorrect: buttonStyleSelected,
+                              buttonStyleStandard: buttonStyleUnselected),
                           actions: <Widget>[
                             TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 child: Text('Done')),
+                            OutlinedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0))),
+                              ),
+                              child: const Text("Done"),
+                            )
                           ],
                         ),
                       );
