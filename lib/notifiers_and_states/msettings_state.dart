@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../data/multiplier_settings.dart';
 
 part 'msettings_state.freezed.dart';
 part 'msettings_state.g.dart';

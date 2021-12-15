@@ -9,7 +9,7 @@ import 'notifiers_and_states/msettings_notifier.dart';
 import 'notifiers_and_states/msettings_state.dart';
 
 void main() {
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final mSettingsNotifier =
@@ -59,7 +59,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
     final x = ref.watch(mqaNotifier);
 
     ref.listen(mqaNotifier, (previous, next) {
-      print('STATE UPDATE: $next');
+      //print('STATE UPDATE: $next');
     });
 
     var buttonStyleStandard = ButtonStyle(
@@ -102,7 +102,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Center(child: Text("Multiplication")),
+          title: const Center(child: Text("Multiplication")),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.format_list_numbered),
@@ -117,7 +117,8 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                         child: AlertDialog(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(36.0)),
-                          title: Center(child: Text('Pick your times tables')),
+                          title: const Center(
+                              child: Text('Pick your times tables')),
                           content: SettingsToggleGroup(
                               buttonStyleCorrect: buttonStyleSelected,
                               buttonStyleStandard: buttonStyleUnselected),
@@ -132,7 +133,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                                   style: ButtonStyle(
                                       padding:
                                           MaterialStateProperty.all<EdgeInsets>(
-                                              EdgeInsets.symmetric(
+                                              const EdgeInsets.symmetric(
                                                   horizontal: 30, vertical: 5)),
                                       foregroundColor:
                                           MaterialStateProperty.all<Color>(
@@ -173,7 +174,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Expanded(
@@ -183,8 +184,8 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "${x.question}",
-                    style: TextStyle(fontSize: 75),
+                    x.question,
+                    style: const TextStyle(fontSize: 75),
                   ),
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
@@ -196,7 +197,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
             Expanded(
                 flex: 5,
                 child: GridView.count(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   crossAxisCount: 3,
                   children: x.possibleAnswers.asMap().entries.map((e) {
                     return SizedBox(
@@ -220,7 +221,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                                     fit: BoxFit.contain,
                                     child: Text(
                                         x.possibleAnswers[e.key].toString(),
-                                        style: TextStyle(fontSize: 50)),
+                                        style: const TextStyle(fontSize: 50)),
                                   ),
                                 ),
                               ),
@@ -277,10 +278,10 @@ class SettingsToggleGroup extends ConsumerWidget {
           width: 280,
           height: 360,
           child: GridView.count(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             crossAxisCount: 3,
             children: multiplierSettings.entries.map((e) {
-              print(e);
+              //print(e);
               return SizedBox(
                 width: 80,
                 height: 80,
@@ -297,7 +298,7 @@ class SettingsToggleGroup extends ConsumerWidget {
                         child: SizedBox.expand(
                           child: Center(
                             child: Text(e.key.toString(),
-                                style: TextStyle(fontSize: 25)),
+                                style: const TextStyle(fontSize: 25)),
                           ),
                         ),
                         style: (() {

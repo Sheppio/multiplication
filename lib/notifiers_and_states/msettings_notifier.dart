@@ -1,8 +1,4 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:multiplication/data/multiplier_settings.dart';
 import 'msettings_state.dart';
 
 class MSettingsNotifier extends StateNotifier<MSettingsState> {
@@ -35,7 +31,7 @@ class MSettingsNotifier extends StateNotifier<MSettingsState> {
     //freezed so we now need to create new state...
     //t[index] = MultiplierSetting(multiplier, !t[index].selectable);
     state = state.copyWith(multiplierSettings: {...t});
-    print('toggleMultiplierSettings state: $state');
+    //print('toggleMultiplierSettings state: $state');
   }
 }
 
