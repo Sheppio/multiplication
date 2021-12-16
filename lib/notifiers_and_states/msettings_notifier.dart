@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'msettings_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MSettingsNotifier extends StateNotifier<MSettingsState> {
   //late Timer _timer;
@@ -8,7 +11,9 @@ class MSettingsNotifier extends StateNotifier<MSettingsState> {
   // 1. initialize with current time
   MSettingsNotifier(
       StateNotifierProviderRef<MSettingsNotifier, MSettingsState> ref)
-      : super(MSettingsState()) {}
+      : super(MSettingsState()) {
+    this.loadFromStorage();
+  }
 
   // var multiplierSettings = <MultiplierSetting>[
   //   MultiplierSetting(2, true),
@@ -32,6 +37,23 @@ class MSettingsNotifier extends StateNotifier<MSettingsState> {
     //t[index] = MultiplierSetting(multiplier, !t[index].selectable);
     state = state.copyWith(multiplierSettings: {...t});
     //print('toggleMultiplierSettings state: $state');
+  }
+
+  saveToStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //int counter = (prefs.getInt('counter') ?? 0) + 1;
+    //print('Pressed $counter times.');
+    await prefs.setString('MultiplierSetting', jsonEncode(state.toJson()));
+  }
+
+  loadFromStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //int counter = (prefs.getInt('counter') ?? 0) + 1;
+    //print('Pressed $counter times.');
+    if (prefs.containsKey('MultiplierSetting')) {
+      state = MSettingsState.fromJson(
+          jsonDecode(prefs.getString('MultiplierSetting') as String));
+    }
   }
 }
 

@@ -43,6 +43,7 @@ dev_dependencies:
   build_runner:
   freezed:
   json_serializable:
+  shared_preferences:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

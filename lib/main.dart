@@ -128,6 +128,9 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                                 padding: const EdgeInsets.all(16.0),
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    ref
+                                        .read(mSettingsNotifier.notifier)
+                                        .saveToStorage();
                                     Navigator.pop(context);
                                   },
                                   style: ButtonStyle(

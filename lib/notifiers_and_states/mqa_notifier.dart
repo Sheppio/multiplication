@@ -7,7 +7,7 @@ import 'mqa_state.dart';
 
 class MQANotifier extends StateNotifier<MQAState> {
   final Ref ref;
-  late Timer _timer;
+  //late Timer _timer;
   DateTime timerStartedAt = DateTime.now();
 
   // 1. initialize with current time
@@ -53,7 +53,7 @@ class MQANotifier extends StateNotifier<MQAState> {
         .where((e) => e.value == true)
         .map((e) => e.key)
         .toList();
-    print('Multipliers: $multipliers');
+    //print('Multipliers: $multipliers');
     var multiplicand = minimumNum + rng.nextInt(12 + 1 - minimumNum);
     var multiplier = multipliers[rng.nextInt(multipliers.length)];
     var answer = multiplicand * multiplier;
@@ -76,7 +76,7 @@ class MQANotifier extends StateNotifier<MQAState> {
       possibleAnswers: possibleAnswers,
       correctAnswerIndex: correctAnswerIndex,
     );
-    print(tempState.toString() + ' ${tempState.correctAnswer}');
+    //print(tempState.toString() + ' ${tempState.correctAnswer}');
     return tempState;
   }
 
