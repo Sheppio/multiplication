@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:multiplication/notifiers_and_states/mqa_result.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'mqa_state.dart';
 
@@ -17,21 +20,37 @@ class MQANotifier extends StateNotifier<MQAState> {
     // }
   }
 
-  // var multiplierSettings = <MultiplierSetting>[
-  //   MultiplierSetting(2, true),
-  //   MultiplierSetting(3, true),
-  //   MultiplierSetting(4, false),
-  //   MultiplierSetting(5, true),
-  //   MultiplierSetting(6, false),
-  //   MultiplierSetting(7, false),
-  //   MultiplierSetting(8, false),
-  //   MultiplierSetting(9, false),
-  //   MultiplierSetting(10, true),
-  //   MultiplierSetting(11, false),
-  //   MultiplierSetting(12, false),
-  // ];
+  saveResultToStorage(MQAResult result) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var results = <String>[];
+    if (prefs.containsKey('MultiplicationResultHistory')) {
+      results.addAll(
+          prefs.getStringList('MultiplicationResultHistory') as List<String>);
+    }
+    results.add(jsonEncode(result.toJson()));
+    //print(results.last);
+    await prefs.setStringList('MultiplicationResultHistory', results);
+  }
+
+  // loadFromStorage() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //int counter = (prefs.getInt('counter') ?? 0) + 1;
+  //   //print('Pressed $counter times.');
+  //   if (prefs.containsKey('MultiplicationResultHistory')) {
+  //     state = MSettingsState.fromJson(
+  //         jsonDecode(prefs.getString('MultiplierSetting') as String));
+  //   }
+  // }
 
   setSelectedIndex(int index) {
+    var result = MQAResult(
+        multiplicand: state.multiplicand,
+        multiplier: state.multiplier,
+        timeToAnswer: Duration(
+            microseconds: DateTime.now().millisecondsSinceEpoch -
+                timerStartedAt.millisecondsSinceEpoch),
+        givenAnswer: state.possibleAnswers[index]);
+    saveResultToStorage(result);
     newQuestionAfterDelay(index == state.correctAnswerIndex
         ? Duration(milliseconds: 1000)
         : Duration(milliseconds: 3000));
@@ -42,6 +61,7 @@ class MQANotifier extends StateNotifier<MQAState> {
   newQuestionAfterDelay(Duration duration) {
     Future.delayed(duration, () {
       state = newQuestionState();
+      timerStartedAt = DateTime.now();
     });
   }
 
@@ -71,7 +91,9 @@ class MQANotifier extends StateNotifier<MQAState> {
     after.sort();
     var possibleAnswers = [...before, answer, ...after];
     var tempState = MQAState(
-      question: "$multiplicand x $multiplier",
+      multiplicand: multiplicand,
+      multiplier: multiplier,
+      // question: "$multiplicand x $multiplier",
       progress: MQAStateProgress.asking,
       possibleAnswers: possibleAnswers,
       correctAnswerIndex: correctAnswerIndex,

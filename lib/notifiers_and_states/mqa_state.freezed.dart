@@ -18,13 +18,15 @@ class _$MQAStateTearOff {
   const _$MQAStateTearOff();
 
   _MQAState call(
-      {String question = '2 x 3',
+      {int multiplicand = 2,
+      int multiplier = 3,
       MQAStateProgress progress = MQAStateProgress.asking,
       List<int> possibleAnswers = const <int>[1, 2, 3, 4, 5, 6, 7, 8, 9],
       int correctAnswerIndex = 5,
       int selectedIndex = -1}) {
     return _MQAState(
-      question: question,
+      multiplicand: multiplicand,
+      multiplier: multiplier,
       progress: progress,
       possibleAnswers: possibleAnswers,
       correctAnswerIndex: correctAnswerIndex,
@@ -38,7 +40,8 @@ const $MQAState = _$MQAStateTearOff();
 
 /// @nodoc
 mixin _$MQAState {
-  String get question => throw _privateConstructorUsedError;
+  int get multiplicand => throw _privateConstructorUsedError;
+  int get multiplier => throw _privateConstructorUsedError;
   MQAStateProgress get progress => throw _privateConstructorUsedError;
   List<int> get possibleAnswers => throw _privateConstructorUsedError;
   int get correctAnswerIndex => throw _privateConstructorUsedError;
@@ -54,7 +57,8 @@ abstract class $MQAStateCopyWith<$Res> {
   factory $MQAStateCopyWith(MQAState value, $Res Function(MQAState) then) =
       _$MQAStateCopyWithImpl<$Res>;
   $Res call(
-      {String question,
+      {int multiplicand,
+      int multiplier,
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
@@ -71,17 +75,22 @@ class _$MQAStateCopyWithImpl<$Res> implements $MQAStateCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? question = freezed,
+    Object? multiplicand = freezed,
+    Object? multiplier = freezed,
     Object? progress = freezed,
     Object? possibleAnswers = freezed,
     Object? correctAnswerIndex = freezed,
     Object? selectedIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      question: question == freezed
-          ? _value.question
-          : question // ignore: cast_nullable_to_non_nullable
-              as String,
+      multiplicand: multiplicand == freezed
+          ? _value.multiplicand
+          : multiplicand // ignore: cast_nullable_to_non_nullable
+              as int,
+      multiplier: multiplier == freezed
+          ? _value.multiplier
+          : multiplier // ignore: cast_nullable_to_non_nullable
+              as int,
       progress: progress == freezed
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
@@ -108,7 +117,8 @@ abstract class _$MQAStateCopyWith<$Res> implements $MQAStateCopyWith<$Res> {
       __$MQAStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String question,
+      {int multiplicand,
+      int multiplier,
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
@@ -126,17 +136,22 @@ class __$MQAStateCopyWithImpl<$Res> extends _$MQAStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? question = freezed,
+    Object? multiplicand = freezed,
+    Object? multiplier = freezed,
     Object? progress = freezed,
     Object? possibleAnswers = freezed,
     Object? correctAnswerIndex = freezed,
     Object? selectedIndex = freezed,
   }) {
     return _then(_MQAState(
-      question: question == freezed
-          ? _value.question
-          : question // ignore: cast_nullable_to_non_nullable
-              as String,
+      multiplicand: multiplicand == freezed
+          ? _value.multiplicand
+          : multiplicand // ignore: cast_nullable_to_non_nullable
+              as int,
+      multiplier: multiplier == freezed
+          ? _value.multiplier
+          : multiplier // ignore: cast_nullable_to_non_nullable
+              as int,
       progress: progress == freezed
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
@@ -161,7 +176,8 @@ class __$MQAStateCopyWithImpl<$Res> extends _$MQAStateCopyWithImpl<$Res>
 
 class _$_MQAState extends _MQAState {
   _$_MQAState(
-      {this.question = '2 x 3',
+      {this.multiplicand = 2,
+      this.multiplier = 3,
       this.progress = MQAStateProgress.asking,
       this.possibleAnswers = const <int>[1, 2, 3, 4, 5, 6, 7, 8, 9],
       this.correctAnswerIndex = 5,
@@ -170,7 +186,10 @@ class _$_MQAState extends _MQAState {
 
   @JsonKey()
   @override
-  final String question;
+  final int multiplicand;
+  @JsonKey()
+  @override
+  final int multiplier;
   @JsonKey()
   @override
   final MQAStateProgress progress;
@@ -186,7 +205,7 @@ class _$_MQAState extends _MQAState {
 
   @override
   String toString() {
-    return 'MQAState(question: $question, progress: $progress, possibleAnswers: $possibleAnswers, correctAnswerIndex: $correctAnswerIndex, selectedIndex: $selectedIndex)';
+    return 'MQAState(multiplicand: $multiplicand, multiplier: $multiplier, progress: $progress, possibleAnswers: $possibleAnswers, correctAnswerIndex: $correctAnswerIndex, selectedIndex: $selectedIndex)';
   }
 
   @override
@@ -194,7 +213,10 @@ class _$_MQAState extends _MQAState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _MQAState &&
-            const DeepCollectionEquality().equals(other.question, question) &&
+            const DeepCollectionEquality()
+                .equals(other.multiplicand, multiplicand) &&
+            const DeepCollectionEquality()
+                .equals(other.multiplier, multiplier) &&
             const DeepCollectionEquality().equals(other.progress, progress) &&
             const DeepCollectionEquality()
                 .equals(other.possibleAnswers, possibleAnswers) &&
@@ -207,7 +229,8 @@ class _$_MQAState extends _MQAState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(question),
+      const DeepCollectionEquality().hash(multiplicand),
+      const DeepCollectionEquality().hash(multiplier),
       const DeepCollectionEquality().hash(progress),
       const DeepCollectionEquality().hash(possibleAnswers),
       const DeepCollectionEquality().hash(correctAnswerIndex),
@@ -221,7 +244,8 @@ class _$_MQAState extends _MQAState {
 
 abstract class _MQAState extends MQAState {
   factory _MQAState(
-      {String question,
+      {int multiplicand,
+      int multiplier,
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
@@ -229,7 +253,9 @@ abstract class _MQAState extends MQAState {
   _MQAState._() : super._();
 
   @override
-  String get question;
+  int get multiplicand;
+  @override
+  int get multiplier;
   @override
   MQAStateProgress get progress;
   @override

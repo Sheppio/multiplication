@@ -11,13 +11,13 @@ class MQAResult with _$MQAResult {
   factory MQAResult(
       {required int multiplicand,
       required int multiplier,
-      required Duration duration,
-      required int answer}) = _MQAResult;
+      required Duration timeToAnswer,
+      required int givenAnswer}) = _MQAResult;
 
   factory MQAResult.fromJson(Map<String, dynamic> json) =>
       _$MQAResultFromJson(json);
 
   bool get isCorrect {
-    return (multiplicand * multiplier) == answer;
+    return (multiplicand * multiplier) == givenAnswer;
   }
 }
