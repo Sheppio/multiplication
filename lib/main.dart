@@ -69,7 +69,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.yellow.shade900, width: 5))));
+                side: BorderSide(color: Colors.yellow.shade900, width: 10))));
     var buttonStyleCorrect = ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor:
@@ -77,28 +77,28 @@ class _MQAPageState extends ConsumerState<MQAPage> {
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.green.shade900, width: 5))));
+                side: BorderSide(color: Colors.green.shade900, width: 10))));
     var buttonStyleIncorrect = ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade500),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.red.shade900, width: 5))));
+                side: BorderSide(color: Colors.red.shade900, width: 10))));
     var buttonStyleSelected = ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade500),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.blue.shade900, width: 5))));
+                side: BorderSide(color: Colors.blue.shade900, width: 10))));
     var buttonStyleUnselected = ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade500),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.grey.shade600, width: 5))));
+                side: BorderSide(color: Colors.grey.shade600, width: 10))));
 
     return Scaffold(
       appBar: AppBar(
@@ -173,131 +173,181 @@ class _MQAPageState extends ConsumerState<MQAPage> {
               },
             ),
           ]),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(
-              height: 30,
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Center(
-                          child: Text(
-                            x.question,
-                            style: const TextStyle(fontSize: 75),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ...x.answerHistory.asMap().entries.map((e) {
-                              return AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 250),
-                                // transitionBuilder: (Widget child,
-                                //     Animation<double> animation) {
-                                //   return ScaleTransition(
-                                //       scale: animation, child: child);
-                                // },
-                                child: Icon(
-                                  Icons.brightness_1,
-                                  key: ValueKey(
-                                      e.key.hashCode + e.value.hashCode),
-                                  size: 40,
-                                  color: (() {
-                                    switch (e.value) {
-                                      case AnswerState.correct:
-                                        return Colors.green;
-                                      case AnswerState.correctFast:
-                                        return Colors.green;
-                                      case AnswerState.correctSlow:
-                                        return Colors.amber;
-                                      case AnswerState.incorrect:
-                                        return Colors.red;
-                                      default:
-                                        return Colors.grey;
-                                    }
-                                  }()),
-                                ),
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      )
-                    ],
+      body: FittedBox(
+        fit: BoxFit.contain,
+        child: AnimatedSwitcher(
+          duration: Duration(milliseconds: 1000),
+          switchOutCurve: Curves.easeInCubic,
+          switchInCurve: Curves.easeInCubic,
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+              //filterQuality: FilterQuality.none,
+            );
+          },
+          child: SizedBox(
+            key: ValueKey(x.question),
+            width: 900,
+            height: 1600,
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 30,
                   ),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.grey, width: 5),
-                      borderRadius: BorderRadius.circular(18)),
-                ),
-              ),
-            ),
-            Expanded(
-                flex: 5,
-                child: GridView.count(
-                  padding: const EdgeInsets.all(5),
-                  crossAxisCount: 3,
-                  children: x.possibleAnswers.asMap().entries.map((e) {
-                    return SizedBox(
-                      width: 100,
-                      height: 100,
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        key: ValueKey(x.question),
+                        padding: const EdgeInsets.all(8.0),
                         child: Container(
                           alignment: Alignment.center,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                x.progress == MQAStateProgress.asking
-                                    ? ref
-                                        .read(mqaNotifier.notifier)
-                                        .setSelectedIndex(e.key)
-                                    : null;
-                              },
-                              child: SizedBox.expand(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              border: Border.all(color: Colors.grey, width: 10),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 2,
                                 child: Center(
-                                  child: FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Text(
-                                        x.possibleAnswers[e.key].toString(),
-                                        style: const TextStyle(fontSize: 50)),
+                                  child: Text(
+                                    x.question,
+                                    style: const TextStyle(fontSize: 150),
                                   ),
                                 ),
                               ),
-                              style: (() {
-                                if (x.progress == MQAStateProgress.asking) {
-                                  return buttonStyleStandard;
-                                } else if (e.key == x.correctAnswerIndex) {
-                                  return buttonStyleCorrect;
-                                } else if (e.key == x.selectedIndex) {
-                                  return buttonStyleIncorrect;
-                                } else {
-                                  return buttonStyleStandard;
-                                }
-                              }())),
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    ...x.answerHistory.asMap().entries.map((e) {
+                                      return AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 250),
+                                        // transitionBuilder: (Widget child,
+                                        //     Animation<double> animation) {
+                                        //   return ScaleTransition(
+                                        //       scale: animation, child: child);
+                                        // },
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.brightness_1,
+                                              // key: ValueKey(
+                                              //     e.key.hashCode + e.value.hashCode),
+                                              size: (e.key ==
+                                                      x.answerHistory.length -
+                                                          1)
+                                                  ? 100
+                                                  : 60,
+                                              color: Colors.black,
+                                            ),
+                                            Icon(
+                                              Icons.brightness_1,
+                                              key: ValueKey(e.key.hashCode +
+                                                  e.value.hashCode),
+                                              size: 80,
+                                              color: (() {
+                                                switch (e.value) {
+                                                  case AnswerState.correct:
+                                                    return Colors.green;
+                                                  case AnswerState.correctFast:
+                                                    return Colors.green;
+                                                  case AnswerState.correctSlow:
+                                                    return Colors.amber;
+                                                  case AnswerState.incorrect:
+                                                    return Colors.red;
+                                                  default:
+                                                    return Colors.grey;
+                                                }
+                                              }()),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    );
-                  }).toList(),
-                )),
-            // MaterialButton(
-            //     child: Text(x.isRunning ? "Stop" : "Start"),
-            //     onPressed: () {
-            //       var n = ref.read(mqaNotifier.notifier);
-            //       x.isRunning ? n.stopTimer() : n.startTimer();
-            //     }),
-          ],
+                    ),
+                  ),
+                  Expanded(
+                      flex: 5,
+                      child: GridView.count(
+                        padding: const EdgeInsets.all(5),
+                        crossAxisCount: 3,
+                        children: x.possibleAnswers.asMap().entries.map((e) {
+                          var style = (() {
+                            if (x.progress == MQAStateProgress.asking) {
+                              return buttonStyleStandard;
+                            } else if (e.key == x.correctAnswerIndex) {
+                              return buttonStyleCorrect;
+                            } else if (e.key == x.selectedIndex) {
+                              return buttonStyleIncorrect;
+                            } else {
+                              return buttonStyleStandard;
+                            }
+                          }());
+                          return AnimatedSwitcher(
+                            duration: Duration(milliseconds: 250),
+                            child: SizedBox(
+                              key: ValueKey(e.value.toString() +
+                                  style.backgroundColor.toString()),
+                              width: 280,
+                              height: 280,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        x.progress == MQAStateProgress.asking
+                                            ? ref
+                                                .read(mqaNotifier.notifier)
+                                                .setSelectedIndex(e.key)
+                                            : null;
+                                      },
+                                      child: SizedBox.expand(
+                                        child: Center(
+                                          child: FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: Text(
+                                                x.possibleAnswers[e.key]
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 100)),
+                                          ),
+                                        ),
+                                      ),
+                                      style: style),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      )),
+                  // MaterialButton(
+                  //     child: Text(x.isRunning ? "Stop" : "Start"),
+                  //     onPressed: () {
+                  //       var n = ref.read(mqaNotifier.notifier);
+                  //       x.isRunning ? n.stopTimer() : n.startTimer();
+                  //     }),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

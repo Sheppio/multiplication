@@ -103,9 +103,15 @@ class MQANotifier extends StateNotifier<MQAState> {
         .where((e) => e.value == true)
         .map((e) => e.key)
         .toList();
-    //print('Multipliers: $multipliers');
-    var multiplicand = minimumNum + rng.nextInt(12 + 1 - minimumNum);
-    var multiplier = multipliers[rng.nextInt(multipliers.length)];
+    var multiplicand = 0;
+    var multiplier = 0;
+    //Make sure we don't ask the same question twice in a row.
+    do {
+      multiplicand = minimumNum + rng.nextInt(12 + 1 - minimumNum);
+      multiplier = multipliers[rng.nextInt(multipliers.length)];
+    } while (
+        multiplicand == state.multiplicand && multiplier == state.multiplier);
+
     var answer = multiplicand * multiplier;
     var correctAnswerIndex = -1;
     // TODO: The below definitley needs correcting for boudaries
