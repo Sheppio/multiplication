@@ -24,11 +24,13 @@ class _$MQAResultTearOff {
   _MQAResult call(
       {required int multiplicand,
       required int multiplier,
+      required DateTime askedAt,
       required Duration timeToAnswer,
       required int givenAnswer}) {
     return _MQAResult(
       multiplicand: multiplicand,
       multiplier: multiplier,
+      askedAt: askedAt,
       timeToAnswer: timeToAnswer,
       givenAnswer: givenAnswer,
     );
@@ -46,6 +48,7 @@ const $MQAResult = _$MQAResultTearOff();
 mixin _$MQAResult {
   int get multiplicand => throw _privateConstructorUsedError;
   int get multiplier => throw _privateConstructorUsedError;
+  DateTime get askedAt => throw _privateConstructorUsedError;
   Duration get timeToAnswer => throw _privateConstructorUsedError;
   int get givenAnswer => throw _privateConstructorUsedError;
 
@@ -62,6 +65,7 @@ abstract class $MQAResultCopyWith<$Res> {
   $Res call(
       {int multiplicand,
       int multiplier,
+      DateTime askedAt,
       Duration timeToAnswer,
       int givenAnswer});
 }
@@ -78,6 +82,7 @@ class _$MQAResultCopyWithImpl<$Res> implements $MQAResultCopyWith<$Res> {
   $Res call({
     Object? multiplicand = freezed,
     Object? multiplier = freezed,
+    Object? askedAt = freezed,
     Object? timeToAnswer = freezed,
     Object? givenAnswer = freezed,
   }) {
@@ -90,6 +95,10 @@ class _$MQAResultCopyWithImpl<$Res> implements $MQAResultCopyWith<$Res> {
           ? _value.multiplier
           : multiplier // ignore: cast_nullable_to_non_nullable
               as int,
+      askedAt: askedAt == freezed
+          ? _value.askedAt
+          : askedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       timeToAnswer: timeToAnswer == freezed
           ? _value.timeToAnswer
           : timeToAnswer // ignore: cast_nullable_to_non_nullable
@@ -111,6 +120,7 @@ abstract class _$MQAResultCopyWith<$Res> implements $MQAResultCopyWith<$Res> {
   $Res call(
       {int multiplicand,
       int multiplier,
+      DateTime askedAt,
       Duration timeToAnswer,
       int givenAnswer});
 }
@@ -128,6 +138,7 @@ class __$MQAResultCopyWithImpl<$Res> extends _$MQAResultCopyWithImpl<$Res>
   $Res call({
     Object? multiplicand = freezed,
     Object? multiplier = freezed,
+    Object? askedAt = freezed,
     Object? timeToAnswer = freezed,
     Object? givenAnswer = freezed,
   }) {
@@ -140,6 +151,10 @@ class __$MQAResultCopyWithImpl<$Res> extends _$MQAResultCopyWithImpl<$Res>
           ? _value.multiplier
           : multiplier // ignore: cast_nullable_to_non_nullable
               as int,
+      askedAt: askedAt == freezed
+          ? _value.askedAt
+          : askedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       timeToAnswer: timeToAnswer == freezed
           ? _value.timeToAnswer
           : timeToAnswer // ignore: cast_nullable_to_non_nullable
@@ -158,6 +173,7 @@ class _$_MQAResult extends _MQAResult {
   _$_MQAResult(
       {required this.multiplicand,
       required this.multiplier,
+      required this.askedAt,
       required this.timeToAnswer,
       required this.givenAnswer})
       : super._();
@@ -170,13 +186,15 @@ class _$_MQAResult extends _MQAResult {
   @override
   final int multiplier;
   @override
+  final DateTime askedAt;
+  @override
   final Duration timeToAnswer;
   @override
   final int givenAnswer;
 
   @override
   String toString() {
-    return 'MQAResult(multiplicand: $multiplicand, multiplier: $multiplier, timeToAnswer: $timeToAnswer, givenAnswer: $givenAnswer)';
+    return 'MQAResult(multiplicand: $multiplicand, multiplier: $multiplier, askedAt: $askedAt, timeToAnswer: $timeToAnswer, givenAnswer: $givenAnswer)';
   }
 
   @override
@@ -188,6 +206,7 @@ class _$_MQAResult extends _MQAResult {
                 .equals(other.multiplicand, multiplicand) &&
             const DeepCollectionEquality()
                 .equals(other.multiplier, multiplier) &&
+            const DeepCollectionEquality().equals(other.askedAt, askedAt) &&
             const DeepCollectionEquality()
                 .equals(other.timeToAnswer, timeToAnswer) &&
             const DeepCollectionEquality()
@@ -199,6 +218,7 @@ class _$_MQAResult extends _MQAResult {
       runtimeType,
       const DeepCollectionEquality().hash(multiplicand),
       const DeepCollectionEquality().hash(multiplier),
+      const DeepCollectionEquality().hash(askedAt),
       const DeepCollectionEquality().hash(timeToAnswer),
       const DeepCollectionEquality().hash(givenAnswer));
 
@@ -217,6 +237,7 @@ abstract class _MQAResult extends MQAResult {
   factory _MQAResult(
       {required int multiplicand,
       required int multiplier,
+      required DateTime askedAt,
       required Duration timeToAnswer,
       required int givenAnswer}) = _$_MQAResult;
   _MQAResult._() : super._();
@@ -228,6 +249,8 @@ abstract class _MQAResult extends MQAResult {
   int get multiplicand;
   @override
   int get multiplier;
+  @override
+  DateTime get askedAt;
   @override
   Duration get timeToAnswer;
   @override

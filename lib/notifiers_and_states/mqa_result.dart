@@ -11,6 +11,7 @@ class MQAResult with _$MQAResult {
   factory MQAResult(
       {required int multiplicand,
       required int multiplier,
+      required DateTime askedAt,
       required Duration timeToAnswer,
       required int givenAnswer}) = _MQAResult;
 

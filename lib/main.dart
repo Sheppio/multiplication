@@ -106,7 +106,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.format_list_numbered),
-              tooltip: 'Show Snackbar',
+              tooltip: 'Select time tables...',
               onPressed: () {
                 showDialog(
                     barrierDismissible: false,
@@ -186,9 +186,56 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   alignment: Alignment.center,
-                  child: Text(
-                    x.question,
-                    style: const TextStyle(fontSize: 75),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Center(
+                          child: Text(
+                            x.question,
+                            style: const TextStyle(fontSize: 75),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ...x.answerHistory.asMap().entries.map((e) {
+                              return AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 250),
+                                // transitionBuilder: (Widget child,
+                                //     Animation<double> animation) {
+                                //   return ScaleTransition(
+                                //       scale: animation, child: child);
+                                // },
+                                child: Icon(
+                                  Icons.brightness_1,
+                                  key: ValueKey(
+                                      e.key.hashCode + e.value.hashCode),
+                                  size: 40,
+                                  color: (() {
+                                    switch (e.value) {
+                                      case AnswerState.correct:
+                                        return Colors.green;
+                                      case AnswerState.correctFast:
+                                        return Colors.green;
+                                      case AnswerState.correctSlow:
+                                        return Colors.amber;
+                                      case AnswerState.incorrect:
+                                        return Colors.red;
+                                      default:
+                                        return Colors.grey;
+                                    }
+                                  }()),
+                                ),
+                              );
+                            }).toList(),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                   decoration: BoxDecoration(
                       color: Colors.grey[200],

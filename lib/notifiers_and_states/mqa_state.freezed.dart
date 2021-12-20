@@ -23,7 +23,10 @@ class _$MQAStateTearOff {
       MQAStateProgress progress = MQAStateProgress.asking,
       List<int> possibleAnswers = const <int>[1, 2, 3, 4, 5, 6, 7, 8, 9],
       int correctAnswerIndex = 5,
-      int selectedIndex = -1}) {
+      int selectedIndex = -1,
+      List<AnswerState> answerHistory = const <AnswerState>[
+        AnswerState.incorrect
+      ]}) {
     return _MQAState(
       multiplicand: multiplicand,
       multiplier: multiplier,
@@ -31,6 +34,7 @@ class _$MQAStateTearOff {
       possibleAnswers: possibleAnswers,
       correctAnswerIndex: correctAnswerIndex,
       selectedIndex: selectedIndex,
+      answerHistory: answerHistory,
     );
   }
 }
@@ -46,6 +50,7 @@ mixin _$MQAState {
   List<int> get possibleAnswers => throw _privateConstructorUsedError;
   int get correctAnswerIndex => throw _privateConstructorUsedError;
   int get selectedIndex => throw _privateConstructorUsedError;
+  List<AnswerState> get answerHistory => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MQAStateCopyWith<MQAState> get copyWith =>
@@ -62,7 +67,8 @@ abstract class $MQAStateCopyWith<$Res> {
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
-      int selectedIndex});
+      int selectedIndex,
+      List<AnswerState> answerHistory});
 }
 
 /// @nodoc
@@ -81,6 +87,7 @@ class _$MQAStateCopyWithImpl<$Res> implements $MQAStateCopyWith<$Res> {
     Object? possibleAnswers = freezed,
     Object? correctAnswerIndex = freezed,
     Object? selectedIndex = freezed,
+    Object? answerHistory = freezed,
   }) {
     return _then(_value.copyWith(
       multiplicand: multiplicand == freezed
@@ -107,6 +114,10 @@ class _$MQAStateCopyWithImpl<$Res> implements $MQAStateCopyWith<$Res> {
           ? _value.selectedIndex
           : selectedIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      answerHistory: answerHistory == freezed
+          ? _value.answerHistory
+          : answerHistory // ignore: cast_nullable_to_non_nullable
+              as List<AnswerState>,
     ));
   }
 }
@@ -122,7 +133,8 @@ abstract class _$MQAStateCopyWith<$Res> implements $MQAStateCopyWith<$Res> {
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
-      int selectedIndex});
+      int selectedIndex,
+      List<AnswerState> answerHistory});
 }
 
 /// @nodoc
@@ -142,6 +154,7 @@ class __$MQAStateCopyWithImpl<$Res> extends _$MQAStateCopyWithImpl<$Res>
     Object? possibleAnswers = freezed,
     Object? correctAnswerIndex = freezed,
     Object? selectedIndex = freezed,
+    Object? answerHistory = freezed,
   }) {
     return _then(_MQAState(
       multiplicand: multiplicand == freezed
@@ -168,6 +181,10 @@ class __$MQAStateCopyWithImpl<$Res> extends _$MQAStateCopyWithImpl<$Res>
           ? _value.selectedIndex
           : selectedIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      answerHistory: answerHistory == freezed
+          ? _value.answerHistory
+          : answerHistory // ignore: cast_nullable_to_non_nullable
+              as List<AnswerState>,
     ));
   }
 }
@@ -181,7 +198,8 @@ class _$_MQAState extends _MQAState {
       this.progress = MQAStateProgress.asking,
       this.possibleAnswers = const <int>[1, 2, 3, 4, 5, 6, 7, 8, 9],
       this.correctAnswerIndex = 5,
-      this.selectedIndex = -1})
+      this.selectedIndex = -1,
+      this.answerHistory = const <AnswerState>[AnswerState.incorrect]})
       : super._();
 
   @JsonKey()
@@ -202,10 +220,13 @@ class _$_MQAState extends _MQAState {
   @JsonKey()
   @override
   final int selectedIndex;
+  @JsonKey()
+  @override
+  final List<AnswerState> answerHistory;
 
   @override
   String toString() {
-    return 'MQAState(multiplicand: $multiplicand, multiplier: $multiplier, progress: $progress, possibleAnswers: $possibleAnswers, correctAnswerIndex: $correctAnswerIndex, selectedIndex: $selectedIndex)';
+    return 'MQAState(multiplicand: $multiplicand, multiplier: $multiplier, progress: $progress, possibleAnswers: $possibleAnswers, correctAnswerIndex: $correctAnswerIndex, selectedIndex: $selectedIndex, answerHistory: $answerHistory)';
   }
 
   @override
@@ -223,7 +244,9 @@ class _$_MQAState extends _MQAState {
             const DeepCollectionEquality()
                 .equals(other.correctAnswerIndex, correctAnswerIndex) &&
             const DeepCollectionEquality()
-                .equals(other.selectedIndex, selectedIndex));
+                .equals(other.selectedIndex, selectedIndex) &&
+            const DeepCollectionEquality()
+                .equals(other.answerHistory, answerHistory));
   }
 
   @override
@@ -234,7 +257,8 @@ class _$_MQAState extends _MQAState {
       const DeepCollectionEquality().hash(progress),
       const DeepCollectionEquality().hash(possibleAnswers),
       const DeepCollectionEquality().hash(correctAnswerIndex),
-      const DeepCollectionEquality().hash(selectedIndex));
+      const DeepCollectionEquality().hash(selectedIndex),
+      const DeepCollectionEquality().hash(answerHistory));
 
   @JsonKey(ignore: true)
   @override
@@ -249,7 +273,8 @@ abstract class _MQAState extends MQAState {
       MQAStateProgress progress,
       List<int> possibleAnswers,
       int correctAnswerIndex,
-      int selectedIndex}) = _$_MQAState;
+      int selectedIndex,
+      List<AnswerState> answerHistory}) = _$_MQAState;
   _MQAState._() : super._();
 
   @override
@@ -264,6 +289,8 @@ abstract class _MQAState extends MQAState {
   int get correctAnswerIndex;
   @override
   int get selectedIndex;
+  @override
+  List<AnswerState> get answerHistory;
   @override
   @JsonKey(ignore: true)
   _$MQAStateCopyWith<_MQAState> get copyWith =>

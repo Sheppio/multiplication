@@ -12,50 +12,80 @@ class MQANotifier extends StateNotifier<MQAState> {
   final Ref ref;
   //late Timer _timer;
   DateTime timerStartedAt = DateTime.now();
+  List<MQAResult> resultHistory = [];
 
   // 1. initialize with current time
   MQANotifier(this.ref) : super(MQAState()) {
-    // for (int x = 0; x < 100; x++) {
-    //   newQuestionState();
-    // }
+    init();
   }
 
-  saveResultToStorage(MQAResult result) async {
+  init() async {
+    resultHistory.addAll(await getResultHistoryFromSharedPrefs());
+  }
+
+  Future<List<MQAResult>> getResultHistoryFromSharedPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var results = <String>[];
+    prefs.remove('MultiplicationResultHistory');
     if (prefs.containsKey('MultiplicationResultHistory')) {
-      results.addAll(
-          prefs.getStringList('MultiplicationResultHistory') as List<String>);
+      return (prefs.getStringList('MultiplicationResultHistory')
+              as List<String>)
+          .map((e) => MQAResult.fromJson(jsonDecode(e)))
+          .toList();
+    } else {
+      return <MQAResult>[];
     }
-    results.add(jsonEncode(result.toJson()));
-    //print(results.last);
-    await prefs.setStringList('MultiplicationResultHistory', results);
   }
 
-  // loadFromStorage() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   //int counter = (prefs.getInt('counter') ?? 0) + 1;
-  //   //print('Pressed $counter times.');
-  //   if (prefs.containsKey('MultiplicationResultHistory')) {
-  //     state = MSettingsState.fromJson(
-  //         jsonDecode(prefs.getString('MultiplierSetting') as String));
-  //   }
-  // }
+  saveResult(MQAResult result) async {
+    resultHistory.add(result);
+    await saveResultHistoryToSharedPrefs(resultHistory);
+  }
+
+  Future<bool> saveResultHistoryToSharedPrefs(
+      List<MQAResult> resultHistory) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var temp = resultHistory.map((e) => jsonEncode(e.toJson())).toList();
+    return await prefs.setStringList('MultiplicationResultHistory', temp);
+  }
 
   setSelectedIndex(int index) {
     var result = MQAResult(
         multiplicand: state.multiplicand,
         multiplier: state.multiplier,
+        askedAt: timerStartedAt,
         timeToAnswer: Duration(
             microseconds: DateTime.now().millisecondsSinceEpoch -
                 timerStartedAt.millisecondsSinceEpoch),
         givenAnswer: state.possibleAnswers[index]);
-    saveResultToStorage(result);
+    saveResult(result);
     newQuestionAfterDelay(index == state.correctAnswerIndex
         ? Duration(milliseconds: 1000)
         : Duration(milliseconds: 3000));
     state = state.copyWith(
-        selectedIndex: index, progress: MQAStateProgress.showingAnswer);
+        selectedIndex: index,
+        progress: MQAStateProgress.showingAnswer,
+        answerHistory: mapResultsToAnswerState(
+            getResultsHistory(state.multiplicand, state.multiplier),
+            numberOfResults: 4));
+  }
+
+  List<AnswerState> mapResultsToAnswerState(List<MQAResult> results,
+      {int? numberOfResults}) {
+    var temp = results
+        .map((e) => e.isCorrect ? AnswerState.correct : AnswerState.incorrect)
+        .toList();
+    if (numberOfResults != null) {
+      if (temp.length > numberOfResults)
+        temp = temp.sublist(temp.length - numberOfResults);
+      else if (temp.length < numberOfResults) {
+        temp = [
+          ...List.filled(
+              numberOfResults - temp.length, AnswerState.notAnswered),
+          ...temp
+        ];
+      }
+    }
+    return temp;
   }
 
   newQuestionAfterDelay(Duration duration) {
@@ -90,16 +120,30 @@ class MQANotifier extends StateNotifier<MQAState> {
     before.sort();
     after.sort();
     var possibleAnswers = [...before, answer, ...after];
+    var answerHistory = getResultsHistory(multiplicand, multiplier);
+    var answerHistoryAnswerStates = mapResultsToAnswerState(
+        getResultsHistory(multiplicand, multiplier),
+        numberOfResults: 3);
+    answerHistoryAnswerStates.add(AnswerState.notAnswered);
     var tempState = MQAState(
-      multiplicand: multiplicand,
-      multiplier: multiplier,
-      // question: "$multiplicand x $multiplier",
-      progress: MQAStateProgress.asking,
-      possibleAnswers: possibleAnswers,
-      correctAnswerIndex: correctAnswerIndex,
-    );
+        multiplicand: multiplicand,
+        multiplier: multiplier,
+        // question: "$multiplicand x $multiplier",
+        progress: MQAStateProgress.asking,
+        possibleAnswers: possibleAnswers,
+        correctAnswerIndex: correctAnswerIndex,
+        answerHistory: answerHistoryAnswerStates);
     //print(tempState.toString() + ' ${tempState.correctAnswer}');
     return tempState;
+  }
+
+  List<MQAResult> getResultsHistory(int multiplicand, int multiplier) {
+    var temp = resultHistory
+        .where(
+            (e) => e.multiplicand == multiplicand && e.multiplier == multiplier)
+        .toList();
+    temp.sort((a, b) => a.askedAt.compareTo(b.askedAt));
+    return temp;
   }
 
   int get correctAnswer {

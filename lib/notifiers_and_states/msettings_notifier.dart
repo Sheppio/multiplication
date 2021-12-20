@@ -5,10 +5,6 @@ import 'msettings_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MSettingsNotifier extends StateNotifier<MSettingsState> {
-  //late Timer _timer;
-  //DateTime timerStartedAt = DateTime.now();
-
-  // 1. initialize with current time
   MSettingsNotifier(
       StateNotifierProviderRef<MSettingsNotifier, MSettingsState> ref)
       : super(MSettingsState()) {
@@ -32,11 +28,7 @@ class MSettingsNotifier extends StateNotifier<MSettingsState> {
   toggleMultiplierSetting(int multiplier) {
     var t = Map.from(state.multiplierSettings);
     t[multiplier] = !t[multiplier];
-    //var index = t.indexWhere((e) => e.multiplier == multiplier);
-    //freezed so we now need to create new state...
-    //t[index] = MultiplierSetting(multiplier, !t[index].selectable);
     state = state.copyWith(multiplierSettings: {...t});
-    //print('toggleMultiplierSettings state: $state');
   }
 
   saveToStorage() async {
