@@ -179,7 +179,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
         child: FittedBox(
           fit: BoxFit.contain,
           child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 1000),
+            duration: Duration(milliseconds: 500),
             switchOutCurve: Curves.easeInCubic,
             switchInCurve: Curves.easeInCubic,
             transitionBuilder: (Widget child, Animation<double> animation) {
