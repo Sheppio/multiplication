@@ -408,8 +408,11 @@ class SettingsToggleGroup extends ConsumerWidget {
                         },
                         child: SizedBox.expand(
                           child: Center(
-                            child: Text(e.key.toString(),
-                                style: const TextStyle(fontSize: 25)),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(e.key.toString(),
+                                  style: const TextStyle(fontSize: 25)),
+                            ),
                           ),
                         ),
                         style: (() {
