@@ -107,7 +107,8 @@ class _MQAPageState extends ConsumerState<MQAPage> {
           title: const Center(child: Text("Multiplication")),
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Icons.format_list_numbered),
+              //icon: const Icon(Icons.format_list_numbered),
+              icon: const Icon(Icons.settings),
               tooltip: 'Select time tables...',
               onPressed: () {
                 showDialog(
@@ -166,14 +167,14 @@ class _MQAPageState extends ConsumerState<MQAPage> {
                     });
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.settings),
-              tooltip: 'Show settings',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Settings not yet implemented.')));
-              },
-            ),
+            // IconButton(
+            //   icon: const Icon(Icons.settings),
+            //   tooltip: 'Show settings',
+            //   onPressed: () {
+            //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            //         content: Text('Settings not yet implemented.')));
+            //   },
+            // ),
           ]),
       body: Center(
         child: FittedBox(
