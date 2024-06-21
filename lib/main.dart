@@ -171,7 +171,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
               tooltip: 'Show settings',
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Settings not implemented yet.')));
+                    content: Text('Settings not yet implemented.')));
               },
             ),
           ]),
