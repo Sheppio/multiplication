@@ -389,15 +389,15 @@ class SettingsToggleGroup extends ConsumerWidget {
           width: 280,
           height: 360,
           child: GridView.count(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(2),
             crossAxisCount: 3,
             children: multiplierSettings.entries.map((e) {
               //print(e);
               return SizedBox(
-                width: 80,
-                height: 80,
+                width: 85,
+                height: 75,
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: Container(
                     alignment: Alignment.center,
                     child: ElevatedButton(
