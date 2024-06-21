@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Multiplication',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -102,6 +103,7 @@ class _MQAPageState extends ConsumerState<MQAPage> {
 
     return Scaffold(
       appBar: AppBar(
+          centerTitle: true,
           title: const Center(child: Text("Multiplication")),
           actions: <Widget>[
             IconButton(
@@ -166,185 +168,193 @@ class _MQAPageState extends ConsumerState<MQAPage> {
             ),
             IconButton(
               icon: const Icon(Icons.settings),
-              tooltip: 'Show Snackbar',
+              tooltip: 'Show settings',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Settings not implemented yet.')));
               },
             ),
           ]),
-      body: FittedBox(
-        fit: BoxFit.contain,
-        child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 1000),
-          switchOutCurve: Curves.easeInCubic,
-          switchInCurve: Curves.easeInCubic,
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(
-              scale: animation,
-              child: child,
-              //filterQuality: FilterQuality.none,
-            );
-          },
-          child: SizedBox(
-            key: ValueKey(x.question),
-            width: 900,
-            height: 1600,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+      body: Center(
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: AnimatedSwitcher(
+            duration: Duration(milliseconds: 1000),
+            switchOutCurve: Curves.easeInCubic,
+            switchInCurve: Curves.easeInCubic,
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition(
+                scale: animation,
+                child: child,
+                //filterQuality: FilterQuality.none,
+              );
+            },
+            child: SizedBox(
+              key: ValueKey(x.question),
+              width: 900,
+              height: 1600,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Expanded(
+                      flex: 2,
                       child: Padding(
-                        key: ValueKey(x.question),
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              border: Border.all(color: Colors.grey, width: 10),
-                              borderRadius: BorderRadius.circular(18)),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Center(
-                                  child: Text(
-                                    x.question,
-                                    style: const TextStyle(fontSize: 150),
+                        padding: const EdgeInsets.all(10.0),
+                        child: Padding(
+                          key: ValueKey(x.question),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                border:
+                                    Border.all(color: Colors.grey, width: 10),
+                                borderRadius: BorderRadius.circular(18)),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Center(
+                                    child: Text(
+                                      x.question,
+                                      style: const TextStyle(fontSize: 150),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    ...x.answerHistory.asMap().entries.map((e) {
-                                      return AnimatedSwitcher(
-                                        duration:
-                                            const Duration(milliseconds: 250),
-                                        // transitionBuilder: (Widget child,
-                                        //     Animation<double> animation) {
-                                        //   return ScaleTransition(
-                                        //       scale: animation, child: child);
-                                        // },
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.brightness_1,
-                                              // key: ValueKey(
-                                              //     e.key.hashCode + e.value.hashCode),
-                                              size: (e.key ==
-                                                      x.answerHistory.length -
-                                                          1)
-                                                  ? 100
-                                                  : 60,
-                                              color: Colors.black,
-                                            ),
-                                            Icon(
-                                              Icons.brightness_1,
-                                              key: ValueKey(e.key.hashCode +
-                                                  e.value.hashCode),
-                                              size: 80,
-                                              color: (() {
-                                                switch (e.value) {
-                                                  case AnswerState.correct:
-                                                    return Colors.green;
-                                                  case AnswerState.correctFast:
-                                                    return Colors.green;
-                                                  case AnswerState.correctSlow:
-                                                    return Colors.amber;
-                                                  case AnswerState.incorrect:
-                                                    return Colors.red;
-                                                  default:
-                                                    return Colors.grey;
-                                                }
-                                              }()),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ],
-                                ),
-                              )
-                            ],
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      ...x.answerHistory
+                                          .asMap()
+                                          .entries
+                                          .map((e) {
+                                        return AnimatedSwitcher(
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          // transitionBuilder: (Widget child,
+                                          //     Animation<double> animation) {
+                                          //   return ScaleTransition(
+                                          //       scale: animation, child: child);
+                                          // },
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.brightness_1,
+                                                // key: ValueKey(
+                                                //     e.key.hashCode + e.value.hashCode),
+                                                size: (e.key ==
+                                                        x.answerHistory.length -
+                                                            1)
+                                                    ? 100
+                                                    : 60,
+                                                color: Colors.black,
+                                              ),
+                                              Icon(
+                                                Icons.brightness_1,
+                                                key: ValueKey(e.key.hashCode +
+                                                    e.value.hashCode),
+                                                size: 80,
+                                                color: (() {
+                                                  switch (e.value) {
+                                                    case AnswerState.correct:
+                                                      return Colors.green;
+                                                    case AnswerState
+                                                          .correctFast:
+                                                      return Colors.green;
+                                                    case AnswerState
+                                                          .correctSlow:
+                                                      return Colors.amber;
+                                                    case AnswerState.incorrect:
+                                                      return Colors.red;
+                                                    default:
+                                                      return Colors.grey;
+                                                  }
+                                                }()),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                      flex: 5,
-                      child: GridView.count(
-                        padding: const EdgeInsets.all(5),
-                        crossAxisCount: 3,
-                        children: x.possibleAnswers.asMap().entries.map((e) {
-                          var style = (() {
-                            if (x.progress == MQAStateProgress.asking) {
-                              return buttonStyleStandard;
-                            } else if (e.key == x.correctAnswerIndex) {
-                              return buttonStyleCorrect;
-                            } else if (e.key == x.selectedIndex) {
-                              return buttonStyleIncorrect;
-                            } else {
-                              return buttonStyleStandard;
-                            }
-                          }());
-                          return AnimatedSwitcher(
-                            duration: Duration(milliseconds: 250),
-                            child: SizedBox(
-                              key: ValueKey(e.value.toString() +
-                                  style.backgroundColor.toString()),
-                              width: 280,
-                              height: 280,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        x.progress == MQAStateProgress.asking
-                                            ? ref
-                                                .read(mqaNotifier.notifier)
-                                                .setSelectedIndex(e.key)
-                                            : null;
-                                      },
-                                      child: SizedBox.expand(
-                                        child: Center(
-                                          child: FittedBox(
-                                            fit: BoxFit.contain,
-                                            child: Text(
-                                                x.possibleAnswers[e.key]
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 100)),
+                    Expanded(
+                        flex: 5,
+                        child: GridView.count(
+                          padding: const EdgeInsets.all(5),
+                          crossAxisCount: 3,
+                          children: x.possibleAnswers.asMap().entries.map((e) {
+                            var style = (() {
+                              if (x.progress == MQAStateProgress.asking) {
+                                return buttonStyleStandard;
+                              } else if (e.key == x.correctAnswerIndex) {
+                                return buttonStyleCorrect;
+                              } else if (e.key == x.selectedIndex) {
+                                return buttonStyleIncorrect;
+                              } else {
+                                return buttonStyleStandard;
+                              }
+                            }());
+                            return AnimatedSwitcher(
+                              duration: Duration(milliseconds: 250),
+                              child: SizedBox(
+                                key: ValueKey(e.value.toString() +
+                                    style.backgroundColor.toString()),
+                                width: 280,
+                                height: 280,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          x.progress == MQAStateProgress.asking
+                                              ? ref
+                                                  .read(mqaNotifier.notifier)
+                                                  .setSelectedIndex(e.key)
+                                              : null;
+                                        },
+                                        child: SizedBox.expand(
+                                          child: Center(
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Text(
+                                                  x.possibleAnswers[e.key]
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 100)),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      style: style),
+                                        style: style),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                      )),
-                  // MaterialButton(
-                  //     child: Text(x.isRunning ? "Stop" : "Start"),
-                  //     onPressed: () {
-                  //       var n = ref.read(mqaNotifier.notifier);
-                  //       x.isRunning ? n.stopTimer() : n.startTimer();
-                  //     }),
-                ],
+                            );
+                          }).toList(),
+                        )),
+                    // MaterialButton(
+                    //     child: Text(x.isRunning ? "Stop" : "Start"),
+                    //     onPressed: () {
+                    //       var n = ref.read(mqaNotifier.notifier);
+                    //       x.isRunning ? n.stopTimer() : n.startTimer();
+                    //     }),
+                  ],
+                ),
               ),
             ),
           ),
@@ -490,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
